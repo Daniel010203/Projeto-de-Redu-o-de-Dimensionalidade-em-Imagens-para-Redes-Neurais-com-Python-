@@ -1,0 +1,70 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+def load_image(image_path):
+    """
+    Carrega a imagem a partir do caminho fornecido.
+    """
+    image = cv2.imread(image_path)
+    if image is None:
+        raise ValueError(f"Não foi possível carregar a imagem do caminho: {image_path}")
+    return image
+
+def convert_to_grayscale(image):
+    """
+    Converte a imagem para escala de cinza.
+    """
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    return gray_image
+
+def convert_to_binary(image, threshold=127):
+    """
+    Converte a imagem para formato binário.
+    """
+    gray_image = convert_to_grayscale(image)
+    _, binary_image = cv2.threshold(gray_image, threshold, 255, cv2.THRESH_BINARY)
+    return binary_image
+
+def plot_images(original, gray, binary):
+    """
+    Plota as imagens original, em escala de cinza e binária.
+    """
+    plt.figure(figsize=(10, 4))
+    
+    plt.subplot(1, 3, 1)
+    plt.title('Original')
+    plt.imshow(cv2.cvtColor(original, cv2.COLOR_BGR2RGB))
+    plt.axis('off')
+    
+    plt.subplot(1, 3, 2)
+    plt.title('Gray Scale')
+    plt.imshow(gray, cmap='gray')
+    plt.axis('off')
+    
+    plt.subplot(1, 3, 3)
+    plt.title('Binary')
+    plt.imshow(binary, cmap='gray')
+    plt.axis('off')
+    
+    plt.tight_layout()
+    plt.show()
+
+def main():
+    # Caminho da imagem a ser processada (o usuário pode alterar esse caminho)
+    image_path = 'caminho/para/sua/imagem.jpg'
+    
+    # Carrega a imagem
+    original_image = load_image(image_path)
+    
+    # Converte a imagem para escala de cinza
+    gray_image = convert_to_grayscale(original_image)
+    
+    # Converte a imagem para formato binário
+    binary_image = convert_to_binary(original_image)
+    
+    # Plota as imagens
+    plot_images(original_image, gray_image, binary_image)
+
+if __name__ == "__main__":
+    main()
